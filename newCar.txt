@@ -1,0 +1,1 @@
+New car: The car's name is X6, belongs to BMW, with a price of $99000.00. It is not a sport-style car
