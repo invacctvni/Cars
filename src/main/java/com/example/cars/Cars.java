@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 public class Cars {
     private String name, brand;
     private double price;
-    private boolean isSport;
+    private boolean sport;
     //add car id
     private int carId;
+    //add sales
+    private int carSalesNumber;
 
     public Cars(String name, String brand, double price, boolean isSport) {
         setName(name);
@@ -18,9 +20,28 @@ public class Cars {
         carId = -1;
     }
 
-    public Cars(int id, String name, String brand, double price, boolean isSport) {
+    public Cars(int carId, String name, String brand, double price, boolean isSport) {
         this(name,brand,price,isSport);
         setCarId(carId);
+    }
+
+    public Cars(int carId, String name, String brand, double price, boolean isSport, int carSalesNumber) {
+        setName(name);
+        setBrand(brand);
+        setPrice(price);
+        setSport(isSport);
+        setCarId(carId);
+        setCarSalesNumber(carSalesNumber);
+    }
+
+    public int getCarSalesNumber() {
+        return carSalesNumber;
+    }
+
+    public void setCarSalesNumber(int carSalesNumber) {
+        if(carSalesNumber >= 0)
+        this.carSalesNumber = carSalesNumber;
+        else throw new IllegalArgumentException("Car sales number must be non-negative");
     }
 
     public int getCarId() {
@@ -28,7 +49,7 @@ public class Cars {
     }
 
     public void setCarId(int carId) {
-        if (carId >0)
+        if (carId >=0)
         this.carId = carId;
         else {
             throw new IllegalArgumentException("car id must be positive");
@@ -75,16 +96,16 @@ public class Cars {
     }
 
     public boolean isSport() {
-        return isSport;
+        return sport;
     }
 
     public void setSport(boolean sport) {
-        isSport = sport;
+        this.sport = sport;
     }
 
     @Override
     public String toString() {
-        if (isSport)
+        if (sport)
         return String.format("The car's name is %s, belongs to %s, with a price of %.2f. It is sport-style car",name,brand,price);
         else return String.format("The car's name is %s, belongs to %s, with a price of $%.2f. It is not a sport-style car",name,brand,price);
     }

@@ -1,6 +1,8 @@
 package com.example.cars;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBUtility {
     //REQ
@@ -39,4 +41,39 @@ public class DBUtility {
         }
         return carId;
     }
+
+    /**
+     * Cr a method to return a list of all objects.
+     */
+    public static ArrayList<Cars> getCarsFromDB() {
+        ArrayList<Cars> cars = new ArrayList<>();
+        //query the db and create objects and add to the list.
+        String sql = " SELECT cars.carID,carName, brand, price,isSport,count(salesId) as carSalesNumber FROM cars\n" +
+                " INNER JOIN carSales\n" +
+                " ON cars.carId = carSales.carId\n" +
+                " group by carID;";
+        try (
+                Connection conn = DriverManager.getConnection(connectURL, user, password);
+                Statement statement = conn.createStatement();
+                ResultSet resultSet = statement.executeQuery(sql);
+                ) {
+            while (resultSet.next()) {
+                int carId = resultSet.getInt("carID");
+                String name = resultSet.getString("carName");
+                String brand = resultSet.getString("brand");
+                Double price = resultSet.getDouble("price");
+                boolean sport = resultSet.getBoolean("isSport");
+                Integer carSalesNumber = resultSet.getInt("carSalesNumber");
+                //create new objects
+                Cars newCar = new Cars(carId,name,brand,price,sport,carSalesNumber);
+                //add to arrayLists.
+                cars.add(newCar);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cars;
+    }
+
+
 }
